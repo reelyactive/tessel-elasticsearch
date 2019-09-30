@@ -1,0 +1,37 @@
+{
+  "name": "tessel-elasticsearch",
+  "version": "1.0.0",
+  "homepage": "https://github.com/reelyactive/tessel-elasticsearch/",
+  "author": {
+    "name": "reelyActive",
+    "email": "info@reelyactive.com"
+  },
+  "description": "Collect and store radio decodings from the reelyActive Owl-in-One based on Tessel 2 in a remote Elasticsearch database.  We believe in an open Internet of Things.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reelyactive/tessel-edge.git"
+  },
+  "keywords": [
+    "reelyActive",
+    "Owl-in-One",
+    "Tessel",
+    "Elasticsearch"
+  ],
+  "dependencies": {
+    "@elastic/elasticsearch": "^7.0.0",
+    "barnowl": "^1.1.0",
+    "barnowl-reel": ">=0.1.10",
+    "barnowl-tcpdump": ">=0.1.5",
+    "raddec": ">=0.2.5"
+  },
+  "contributors": [
+    {
+      "name": "Jeffrey Dungen"
+    }
+  ],
+  "license": "MIT"
+}

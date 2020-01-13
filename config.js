@@ -1,5 +1,5 @@
 /*
- * Copyright reelyActive 2019
+ * Copyright reelyActive 2019-2020
  * We believe in an open Internet of Things
  */
 
@@ -11,7 +11,7 @@ const ES_NODE = 'http://192.168.1.10:9200';
 const LISTEN_TO_REEL = true;
 const LISTEN_TO_TCPDUMP = false;
 const ENABLE_MIXING = true;
-const MIXING_DELAY_MILLISECONDS = 10000;
+const MIXING_DELAY_MILLISECONDS = 60000;
 const INCLUDE_PACKETS = true;
 
 // ---------------------------

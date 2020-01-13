@@ -1,5 +1,5 @@
 /*
- * Copyright reelyActive 2019
+ * Copyright reelyActive 2019-2020
  * We believe in an open Internet of Things
  */
 
@@ -32,6 +32,10 @@ const REEL_DECODING_OPTIONS = {
 const ES_INDEX = 'raddec';
 const ES_MAPPING_TYPE = '_doc';
 
+// Variables
+let raddecs = [];
+let isForwardingRaddecs = false;
+
 // Create Elasticsearch client
 let client = new Client({ node: config.esNode });
 
@@ -53,7 +57,10 @@ if(config.listenToTcpdump) {
 // Forward the raddec to each target while pulsing the green LED
 barnowl.on('raddec', function(raddec) {
   tessel.led[2].on();
-  forward(raddec);
+  raddecs.push(raddec);
+  if(!isForwardingRaddecs) {
+    forward();
+  }
   tessel.led[2].off();
 });
 
@@ -62,12 +69,14 @@ setInterval(function() { tessel.led[3].toggle(); }, 500);
 
 
 /**
- * Forward the given raddec to Elasticsearch.
- * @param {Raddec} raddec The outbound raddec.
+ * Forward the next raddec in the queue to Elasticsearch, repeat.
  */
-function forward(raddec) {
+function forward() {
+  let raddec = raddecs.shift();
   let id = raddec.timestamp + '-' + raddec.transmitterId + '-' +
            raddec.transmitterIdType;
+
+  isForwardingRaddecs = true;
 
   // Create flat raddec and tweak properties for Elasticsearch
   let esRaddec = raddec.toFlattened(raddecOptions);
@@ -80,9 +89,16 @@ function forward(raddec) {
       body: esRaddec
   };
   client.create(params, {}, function(err, result) {
+    let isMoreRaddecs = (raddecs.length > 0);
     if(err) {
       tessel.led[0].on();
       tessel.led[0].off();
+    }
+    if(isMoreRaddecs) {
+      forward();
+    }
+    else {
+      isForwardingRaddecs = false;
     }
   });
 }
